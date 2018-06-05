@@ -8,7 +8,7 @@ var express = require('express'),
 // INDEX ROUTE
 router.get('/', function(req, res) {
 	Topic.find({}, function(err, topics) {
-		if (err) {
+		if (err || !topics) {
 			res.redirect('/');
 		} else {
 			res.render('topics/index', {topics: topics});
