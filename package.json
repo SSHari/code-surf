@@ -1,0 +1,15 @@
+{
+  "name": "code-surf",
+  "version": "1.0.0",
+  "description": "Code Surf is an application designed to keep track of interesting software educational resources.",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Sai Hari",
+  "license": "ISC",
+  "dependencies": {
+    "ejs": "^2.6.1",
+    "express": "^4.16.3"
+  }
+}
