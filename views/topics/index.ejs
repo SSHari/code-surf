@@ -46,7 +46,7 @@
 			  		<em>Created by <%= topic.author %></em>
 			  	</p>
 			  	<p class="float-right">
-			  		<em>10 days ago</em>
+			  		<em><%= moment(topic.createdAt).fromNow() %></em>
 			  	</p>
 			  </div>
 			  <div class="card-body">

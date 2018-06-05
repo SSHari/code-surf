@@ -18,6 +18,11 @@ mongoose.connect(process.env.DATABASE_URL);
 app.set('view engine', 'ejs');
 app.use('/assets', express.static(__dirname + '/public'));
 
+// =========================
+// MOMENTJS CONFIG
+// =========================
+app.locals.moment = require('moment');
+
 app.get('/', function(req, res) {
 	res.render('landing');
 });
