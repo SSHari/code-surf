@@ -1,0 +1,17 @@
+.cs-topics-flex {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.cs-form-header {
+    text-align: center;
+}
+
+.cs-form-container {
+    width: 30%;
+    margin: 25px auto;
+}
+
+.delete-form {
+    display: inline;
+}

@@ -1,2 +1,19 @@
 <% include ../partials/header %>
+
+<h1 class="cs-form-header">New Topic</h1>
+<div class="cs-form-container">
+	<form action="/topics" method="POST">
+		<div class="form-group">
+			<input class="form-control" type="text" name="topic[title]" placeholder="title">
+		</div>
+		<div class="form-group">
+			<input class="form-control" type="text" name="topic[description]" placeholder="description">
+		</div>
+		<div class="form-group">
+			<input class="form-control" type="text" name="topic[author]" placeholder="author">
+		</div>
+		<button class="btn btn-primary btn-block">Submit</button>
+	</form>
+</div>
+
 <% include ../partials/footer %>

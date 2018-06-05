@@ -16,8 +16,20 @@ router.get('/', function(req, res) {
 	});
 });
 
+// NEW ROUTE
 router.get('/new', function(req, res) {
 	res.render('topics/new');
+});
+
+// CREATE ROUTE
+router.post('/', function(req, res) {
+	Topic.create(req.body.topic, function(err, topic) {
+		if (err) {
+			res.redirect('/topics');
+		} else {
+			res.redirect('/topics');
+		}
+	});
 });
 
 module.exports = router;
