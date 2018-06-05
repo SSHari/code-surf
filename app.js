@@ -3,6 +3,12 @@ var express = require('express'),
 	Topic = require('./models/topic');
 	
 // =========================
+// ROUTES
+// =========================
+var indexRoutes = require('./routes/index'),
+	topicRoutes = require('./routes/topics');
+	
+// =========================
 // CREATE EXPRESS APP
 // =========================
 var app = express();
@@ -23,20 +29,13 @@ app.use('/assets', express.static(__dirname + '/public'));
 // =========================
 app.locals.moment = require('moment');
 
-app.get('/', function(req, res) {
-	res.render('landing');
-});
+// =========================
+// SETUP EXPRESS ROUTES
+// =========================
+app.use('/', indexRoutes);
+app.use('/topics', topicRoutes);
 
-app.get('/topics', function(req, res) {
-	Topic.find({}, function(err, topics) {
-		if (err) {
-			res.redirect('/');
-		} else {
-			res.render('topics/index', {topics: topics});
-		}
-	});
-});
-
+// Catch all route displays 404 page
 app.get('*', function(req, res) {
 	res.send('404 Not Found...Try Looking Somewhere Else!');
 });
