@@ -1,6 +1,9 @@
 var express = require('express'),
 	mongoose = require('mongoose'),
-	bodyParser = require('body-parser');
+	bodyParser = require('body-parser'),
+	passport = require('passport'),
+	LocalStrategy = require('passport-local'),
+	User = require('./models/user');;
 	
 // =========================
 // ROUTES
@@ -30,6 +33,26 @@ app.use(bodyParser.urlencoded({extended: true}));
 // MOMENTJS CONFIG
 // =========================
 app.locals.moment = require('moment');
+
+// =========================
+// PASSPORT CONFIG
+// =========================
+app.use(require('express-session')({
+	secret: process.env.EXPRESS_SESSION_SECRET,
+	resave: false,
+	saveUninitialized: false
+}));
+app.use(passport.initialize());
+app.use(passport.session());
+passport.use(new LocalStrategy(User.authenticate()));
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
+
+// Use middleware to setup user info
+app.use(function(req, res, next) {
+	res.locals.currentUser = req.user;
+	next();
+});
 
 // =========================
 // SETUP EXPRESS ROUTES
