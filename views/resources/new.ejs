@@ -1,0 +1,22 @@
+<% include ../partials/header %>
+
+<h1 class="cs-form-header">Create Resource for <%= topic.title %></h1>
+<div class="cs-form-container">
+	<form action="/topics/<%= topic._id %>/resources" method="POST">
+		<div class="form-group">
+			<input class="form-control" type="text" name="resource[title]" placeholder="title">
+		</div>
+		<div class="form-group">
+			<input class="form-control" type="text" name="resource[description]" placeholder="description">
+		</div>
+		<div class="form-group">
+			<input class="form-control" type="text" name="resource[resourceLink]" placeholder="resource link">
+		</div>
+		<div class="form-group">
+			<input class="form-control" type="text" name="resource[author]" placeholder="author">
+		</div>
+		<button class="btn btn-primary btn-block">Submit</button>
+	</form>
+</div>
+
+<% include ../partials/footer %>

@@ -4,15 +4,17 @@ var mongoose = require('mongoose'),
 topicSchema = new mongoose.Schema({
 	title: String,
 	description: String,
-	author: String,
 	createdAt: {
 		type: Date,
 		default: Date.now
 	},
-	resourceCount: {
-		type: Number,
-		default: 0
-	}
+	author: String,
+	resources: [
+		{
+			type: mongoose.Schema.Types.ObjectId,
+			ref: 'Resource'
+		}
+	]
 });
 
 module.exports = mongoose.model('Topic', topicSchema);

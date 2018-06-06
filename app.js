@@ -1,13 +1,13 @@
 var express = require('express'),
 	mongoose = require('mongoose'),
-	bodyParser = require('body-parser'),
-	Topic = require('./models/topic');
+	bodyParser = require('body-parser');
 	
 // =========================
 // ROUTES
 // =========================
 var indexRoutes = require('./routes/index'),
-	topicRoutes = require('./routes/topics');
+	topicRoutes = require('./routes/topics'),
+	resourceRoutes = require('./routes/resources');
 	
 // =========================
 // CREATE EXPRESS APP
@@ -36,6 +36,7 @@ app.locals.moment = require('moment');
 // =========================
 app.use('/', indexRoutes);
 app.use('/topics', topicRoutes);
+app.use('/topics/:topic_id/resources', resourceRoutes);
 
 // Catch all route displays 404 page
 app.get('*', function(req, res) {

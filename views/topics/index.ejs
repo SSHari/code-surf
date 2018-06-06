@@ -4,9 +4,6 @@
   <h1 class="display-3">CodeSurf Topics</h1>
   <p class="lead">Explore our collection of software related resources!</p>
   <hr class="my-4">
-  <!--<p class="lead">-->
-  <!--  <a class="btn btn-primary btn-lg" href="/about" role="button">Learn more</a>-->
-  <!--</p>-->
 </div>
 
 <div class="row">
@@ -50,7 +47,7 @@
 			  <div class="card-body">
 			    <h4 class="card-title"><%= topic.title %></h4>
 			    <p class="card-text"><%= topic.description %></p>
-			    <button type="button" class="btn btn-secondary">Secondary</button>
+			    <a class="btn btn-secondary" href="/topics/<%= topic._id %>">Explore</a>
 			    <p class="float-right">Resources: <%= topic.resourceCount %></p>
 			  </div>
 			</div>
