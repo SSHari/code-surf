@@ -1,10 +1,18 @@
 <% include ../partials/header %>
 
 <div class="jumbotron">
-  <h1 class="display-3"><%= topic.title %></h1>
-  <p class="lead"><%= topic.description %></p>
-  <hr class="my-4">
-  <a class="btn btn-primary btn-md" href="/topics/<%= topic._id %>/resources/new" role="button">Add Resource</a>
+	<h1 class="display-3"><%= topic.title %></h1>
+	<p class="lead"><%= topic.description %></p>
+	<hr class="my-4">
+	<a class="btn btn-primary btn-md" href="/topics/<%= topic._id %>/resources/new" role="button">Add Resource</a>
+	<div class="mt-3">
+		<div class="float-left">
+			<em>Created by <%= topic.author.username %></em>
+		</div>
+		<div class="float-right">
+			<em><%= moment(topic.createdAt).fromNow() %></em>
+		</div>
+	</div>
 </div>
 
 <div class="row">

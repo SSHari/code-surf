@@ -8,7 +8,13 @@ topicSchema = new mongoose.Schema({
 		type: Date,
 		default: Date.now
 	},
-	author: String,
+	author: {
+		id: {
+			type: mongoose.Schema.Types.ObjectId,
+			ref: 'User'
+		},
+		username: String
+	},
 	resources: [
 		{
 			type: mongoose.Schema.Types.ObjectId,

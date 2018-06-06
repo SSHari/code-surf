@@ -38,7 +38,7 @@
 			<div class="card bg-light mb-3">
 			  <div class="card-header">
 			  	<p class="float-left">
-			  		<em>Created by <%= topic.author %></em>
+			  		<em>Created by <%= topic.author.username %></em>
 			  	</p>
 			  	<p class="float-right">
 			  		<em><%= moment(topic.createdAt).fromNow() %></em>

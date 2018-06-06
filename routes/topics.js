@@ -24,6 +24,13 @@ router.get('/new', middleware.isLoggedIn, function(req, res) {
 
 // CREATE ROUTE
 router.post('/', middleware.isLoggedIn, function(req, res) {
+	// add author to topic before creation
+	var author = {
+		id: req.user._id,
+		username: req.user.username
+	};
+	req.body.topic.author = author;
+	
 	Topic.create(req.body.topic, function(err, topic) {
 		if (err) {
 			res.redirect('/topics');
