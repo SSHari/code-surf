@@ -34,7 +34,7 @@ router.post('/', function(req, res) {
 
 // SHOW ROUTE
 router.get('/:topic_id', function(req, res) {
-	Topic.findById(req.params.topic_id, function(err, topic) {
+	Topic.findById(req.params.topic_id).populate('resources').exec(function(err, topic) {
 		if (err || !topic) {
 			res.redirect('/topics');
 		} else {
