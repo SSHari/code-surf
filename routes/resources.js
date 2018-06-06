@@ -1,7 +1,9 @@
 var express = require('express'),
+	utils = require('../utils'),
 	Topic = require('../models/topic'),
 	Resource = require('../models/resource'),
-	router = express.Router({mergeParams: true});
+	router = express.Router({mergeParams: true}),
+	sanitizerMethods = utils.sanitizerMethods;
 	
 // =========================
 // RESTful RESOURCES ROUTES
@@ -20,9 +22,14 @@ router.get('/new', function(req, res) {
 // CREATE ROUTE
 router.post('/', function(req, res) {
 	Topic.findById(req.params.topic_id, function(err, topic) {
+		var anchor;
+		
 		if (err || !topic) {
 			res.redirect('/topics');
 		} else {
+			anchor = '<a class="btn btn-primary" href="' + req.body.resource.resourceLink + '">View Resource</a>';
+			req.body.resource.resourceLink = sanitizerMethods.sanitizeAnchorTag(anchor);
+			
 			Resource.create(req.body.resource, function(err, resource) {
 				if (err) {
 					res.redirect('/topics/' + req.params.topic_id);
@@ -43,7 +50,14 @@ router.post('/', function(req, res) {
 
 // SHOW ROUTE
 router.get('/:resource_id', function(req, res) {
-	res.send('Resource Show Route!');
+	Resource.findById(req.params.resource_id, function(err, resource) {
+		if (err || !resource) {
+			res.redirect('/topics/' + req.params.topic_id);
+		} else {
+			resource.resourceLink = sanitizerMethods.sanitizeAnchorTag(resource.resourceLink);
+			res.render('resources/show', {resource: resource});
+		}
+	});
 });
 
 module.exports = router;

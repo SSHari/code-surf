@@ -1,0 +1,17 @@
+<% include ../partials/header %>
+
+<div class="card">
+  <div class="card-header">
+    <p class="float-left">Submitted by <%= resource.author %></p>
+    <p class="float-right"><%= moment(resource.createdAt).from() %></p>
+  </div>
+  <div class="card-body">
+    <h4 class="card-title"><%= resource.title %></h4>
+    <p class="card-text"><%= resource.description %></p>
+    <% if (resource.resourceLink.includes('href=')) { %>
+    	<%- resource.resourceLink %>
+    <% } %>
+  </div>
+</div>
+
+<% include ../partials/footer %>
