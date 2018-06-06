@@ -23,11 +23,25 @@ router.get('/new', middleware.isLoggedIn, function(req, res) {
 // CREATE ROUTE
 router.post('/', middleware.isLoggedIn, function(req, res) {
 	Topic.findById(req.params.topic_id, function(err, topic) {
-		var anchor;
+		var author, anchor;
 		
 		if (err || !topic) {
 			res.redirect('/topics');
 		} else {
+			// add author to resource before creation
+			author = {
+				id: req.user._id,
+				username: req.user.username
+			};
+			req.body.resource.author = author;
+			
+			// add topic to resource before creation
+			req.body.resource.topic = {
+				id: topic._id,
+				topicTitle: topic.title
+			};
+			
+			// create anchor tag for resource before creation
 			anchor = '<a class="btn btn-primary" href="' + req.body.resource.resourceLink + '">View Resource</a>';
 			req.body.resource.resourceLink = sanitizerMethods.sanitizeAnchorTag(anchor);
 			

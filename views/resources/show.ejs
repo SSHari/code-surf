@@ -2,7 +2,7 @@
 
 <div class="card">
   <div class="card-header">
-    <p class="float-left">Submitted by <%= resource.author %></p>
+    <p class="float-left">Submitted by <%= resource.author.username %></p>
     <p class="float-right"><%= moment(resource.createdAt).from() %></p>
   </div>
   <div class="card-body">
