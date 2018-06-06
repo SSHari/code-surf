@@ -1,6 +1,7 @@
 var express = require('express'),
 	passport = require('passport'),
 	User = require('../models/user'),
+	middleware = require('../middleware'),
 	router = express.Router();
 
 // =========================
@@ -14,12 +15,12 @@ router.get('/', function(req, res) {
 // AUTH ROUTES
 // =========================
 // get sign up page
-router.get('/register', function(req, res) {
+router.get('/register', middleware.isLoggedOut, function(req, res) {
 	res.render('register');
 });
 
 // sign up a new user
-router.post('/register', function(req, res) {
+router.post('/register', middleware.isLoggedOut, function(req, res) {
 	var newUser = new User({username: req.body.username});
 	User.register(newUser, req.body.password, function(err, user) {
 		if (err) {
@@ -33,12 +34,12 @@ router.post('/register', function(req, res) {
 });
 
 // get login page
-router.get('/login', function(req, res) {
+router.get('/login', middleware.isLoggedOut, function(req, res) {
 	res.render('login', {page: 'login'});
 });
 
 // log user in
-router.post('/login', passport.authenticate('local', {
+router.post('/login', middleware.isLoggedOut, passport.authenticate('local', {
 	successRedirect: '/topics',
 	failureRedirect: '/login'
 }), function(req, res) {
