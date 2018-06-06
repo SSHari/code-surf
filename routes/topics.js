@@ -1,5 +1,6 @@
 var express = require('express'),
 	Topic = require('../models/topic'),
+	middleware = require('../middleware'),
 	router = express.Router();
 
 // =========================
@@ -17,12 +18,12 @@ router.get('/', function(req, res) {
 });
 
 // NEW ROUTE
-router.get('/new', function(req, res) {
+router.get('/new', middleware.isLoggedIn, function(req, res) {
 	res.render('topics/new');
 });
 
 // CREATE ROUTE
-router.post('/', function(req, res) {
+router.post('/', middleware.isLoggedIn, function(req, res) {
 	Topic.create(req.body.topic, function(err, topic) {
 		if (err) {
 			res.redirect('/topics');

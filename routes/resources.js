@@ -2,6 +2,7 @@ var express = require('express'),
 	utils = require('../utils'),
 	Topic = require('../models/topic'),
 	Resource = require('../models/resource'),
+	middleware = require('../middleware'),
 	router = express.Router({mergeParams: true}),
 	sanitizerMethods = utils.sanitizerMethods;
 	
@@ -9,7 +10,7 @@ var express = require('express'),
 // RESTful RESOURCES ROUTES
 // =========================
 // NEW ROUTE
-router.get('/new', function(req, res) {
+router.get('/new', middleware.isLoggedIn, function(req, res) {
 	Topic.findById(req.params.topic_id, function(err, topic) {
 		if (err || !topic) {
 			res.redirect('/topics');
@@ -20,7 +21,7 @@ router.get('/new', function(req, res) {
 });
 
 // CREATE ROUTE
-router.post('/', function(req, res) {
+router.post('/', middleware.isLoggedIn, function(req, res) {
 	Topic.findById(req.params.topic_id, function(err, topic) {
 		var anchor;
 		
