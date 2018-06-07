@@ -2,6 +2,10 @@
     margin-top: 30px;
 }
 
+.cs-recent-resource {
+    color: #007BBD;
+}
+
 .cs-topics-flex {
     display: flex;
     flex-wrap: wrap;

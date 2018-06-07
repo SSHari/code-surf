@@ -7,12 +7,12 @@ var express = require('express'),
 // RESTful TOPICS ROUTES
 // =========================
 // INDEX ROUTE
-router.get('/', function(req, res) {
+router.get('/', middleware.getLatestResources, function(req, res) {
 	Topic.find({}, function(err, topics) {
 		if (err || !topics) {
 			res.redirect('/');
 		} else {
-			res.render('topics/index', {topics: topics});
+			res.render('topics/index', {topics: topics, latestResources: req.latestResources});
 		}
 	});
 });

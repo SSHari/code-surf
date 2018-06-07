@@ -10,12 +10,16 @@
 	<div class="col-md-4">
 		<div class="card mb-3">
 		  <div class="card-header">
-		    Featured
+		    Recent Resources
 		  </div>
 		  <ul class="list-group list-group-flush">
-		    <li class="list-group-item">Cras justo odio</li>
-		    <li class="list-group-item">Dapibus ac facilisis in</li>
-		    <li class="list-group-item">Vestibulum at eros</li>
+		  	<% latestResources.forEach(function(resource) { %>
+		  		<li class="list-group-item">
+		  			<a class="cs-recent-resource" href="/topics/<%= resource.topic.id %>/resources/<%= resource._id %>">
+		  				<em><%= resource.topic.topicTitle %> - <%= resource.title %></em>
+		  			</a>
+		  		</li>
+		  	<% }); %>
 		  </ul>
 		</div>
 	</div>
