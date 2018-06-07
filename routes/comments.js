@@ -1,13 +1,14 @@
 var express = require('express'),
 	Resource = require('../models/resource'),
 	Comment = require('../models/comment'),
-	router = express.Router();
+	middleware = require('../middleware'),
+	router = express.Router({mergeParams: true});
 
 // =========================
 // RESTful COMMENTS ROUTES
 // =========================
 // CREATE ROUTE
-router.post('/', function(req, res) {
+router.post('/', middleware.isLoggedIn, function(req, res) {
 	Resource.findById(req.params.resource_id, function(err, resource) {
 		var author;
 		if (err || !resource) {

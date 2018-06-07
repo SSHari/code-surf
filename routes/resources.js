@@ -65,7 +65,7 @@ router.post('/', middleware.isLoggedIn, function(req, res) {
 
 // SHOW ROUTE
 router.get('/:resource_id', function(req, res) {
-	Resource.findById(req.params.resource_id, function(err, resource) {
+	Resource.findById(req.params.resource_id).populate('comments').exec(function(err, resource) {
 		if (err || !resource) {
 			res.redirect('/topics/' + req.params.topic_id);
 		} else {
