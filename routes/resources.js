@@ -70,7 +70,7 @@ router.get('/:resource_id', function(req, res) {
 			res.redirect('/topics/' + req.params.topic_id);
 		} else {
 			resource.resourceLink = sanitizerMethods.sanitizeAnchorTag(resource.resourceLink);
-			res.render('resources/show', {resource: resource});
+			res.render('resources/show', {topic_id: req.params.topic_id, resource: resource});
 		}
 	});
 });

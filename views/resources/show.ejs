@@ -15,14 +15,14 @@
 </div>
 
 <% if (currentUser) { %>
-	<form class="form-row" method="" action="POST">
+	<form class="form-row" action="/topics/<%= topic_id %>/resources/<%= resource._id %>/comments" method="POST">
 		<div class="col-sm-8 offset-sm-2">
 			<div class="card pb-2">
 				<div id="cs-new-comment-header" class="card-header">
     				<span class="float-left"><em><%= currentUser.username %></em></span>
     				<button id="cs-new-comment-submit" type="submit" class="float-right"><em>Submit</em></button>
 				</div>
-				<textarea id="cs-new-comment-field" class="card-body"></textarea>
+				<textarea id="cs-new-comment-field" class="card-body" name="comment[text]"></textarea>
 			</div>
 		</div>
 	</form>

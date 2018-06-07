@@ -22,7 +22,13 @@ resourceSchema = new mongoose.Schema({
 			ref: 'Topic'
 		},
 		topicTitle: String
-	}
+	},
+	comments: [
+		{
+			type: mongoose.Schema.Types.ObjectId,
+			ref: 'Comment'
+		}
+	]
 });
 
 module.exports = mongoose.model('Resource', resourceSchema);
