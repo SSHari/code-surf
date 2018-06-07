@@ -17,6 +17,7 @@
 <% if (currentUser) { %>
 	<form class="form-row" action="/topics/<%= topic_id %>/resources/<%= resource._id %>/comments" method="POST">
 		<div class="col-sm-8 offset-sm-2">
+			<h4>New Comment</h4>
 			<div class="card pb-2">
 				<div id="cs-new-comment-header" class="card-header">
     				<span class="float-left"><em><%= currentUser.username %></em></span>
@@ -26,18 +27,31 @@
 			</div>
 		</div>
 	</form>
+	<hr class="my-4">
 <% } %>
 
 <div class="row">
-	<% resource.comments.forEach(function(comment) { %>
-		<div class="col-sm-8 offset-sm-2">
+	<div class="col-sm-8 offset-sm-2">
+		<h3>Comments</h3>
+		<% resource.comments.reverse().forEach(function(comment) { %>
 			<div class="card">
-				<div class="card-body">
-					<%= comment.text %>
+				<div class="card-body pt-1">
+					<div class="row">
+						<div class="col-3">
+							Profile Pic
+						</div>
+						<div class="col-9">
+							<div class="lead pb-2">
+								<em><%= comment.author.username %></em>
+								<span class="float-right"><em><%= moment(comment.createdAt).fromNow(); %></em></span>
+							</div>
+							<%= comment.text %>
+						</div>
+					</div>
 				</div>
 			</div>
-		</div>
-	<% }); %>
+		<% }); %>
+	</div>
 </div>
 
 <% include ../partials/footer %>
