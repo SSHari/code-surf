@@ -16,6 +16,39 @@
     margin: 25px auto;
 }
 
+#cs-new-comment-field {
+    resize: none;
+    border: none;
+    padding: 5px 20px;
+    transition: min-height 0.5s;
+    min-height: 20px;
+    height: 30px;
+}
+
+#cs-new-comment-field:focus {
+    outline: none;
+    transition: min-height 0.5s;
+    min-height: 100px;
+}
+
+#cs-new-comment-header {
+    padding: 0 20px;
+    opacity: 0.5;
+}
+
+#cs-new-comment-submit {
+    background: none;
+    border: none;
+}
+
+#cs-new-comment-submit:focus {
+    outline: none;
+}
+
+#cs-new-comment-submit:hover {
+    color: #739dce;
+}
+
 .delete-form {
     display: inline;
 }
