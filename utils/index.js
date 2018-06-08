@@ -1,5 +1,6 @@
 var sanitizeHtml = require('sanitize-html'),
-	sanitizerMethods;
+	sanitizerMethods,
+	regexMethods;
 
 // =========================
 // CUSTOM SANITIZER METHODS
@@ -15,6 +16,16 @@ sanitizerMethods = {
 	}
 };
 
+// =========================
+// CUSTOM REGEX METHODS
+// =========================
+regexMethods = {
+	escape: function(text) {
+		return text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");
+	}
+};
+
 module.exports = {
-	sanitizerMethods: sanitizerMethods
+	sanitizerMethods: sanitizerMethods,
+	regexMethods: regexMethods
 };

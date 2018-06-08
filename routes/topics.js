@@ -1,5 +1,6 @@
 var express = require('express'),
 	Topic = require('../models/topic'),
+	utils = require('../utils'),
 	middleware = require('../middleware'),
 	router = express.Router();
 
@@ -8,7 +9,12 @@ var express = require('express'),
 // =========================
 // INDEX ROUTE
 router.get('/', middleware.getLatestResources, function(req, res) {
-	Topic.find({}, function(err, topics) {
+	var queryObj = {};
+	if (req.query.search) {
+		queryObj.title = new RegExp(utils.regexMethods.escape(req.query.search), 'gi');
+	}
+	
+	Topic.find(queryObj, function(err, topics) {
 		if (err || !topics) {
 			res.redirect('/');
 		} else {
