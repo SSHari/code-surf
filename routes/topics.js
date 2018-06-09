@@ -1,14 +1,15 @@
 var express = require('express'),
 	Topic = require('../models/topic'),
 	utils = require('../utils'),
-	middleware = require('../middleware'),
+	indexMiddleware = require('../middleware/index'),
+	topicMiddleware = require('../middleware/topic'),
 	router = express.Router();
 
 // =========================
 // RESTful TOPICS ROUTES
 // =========================
 // INDEX ROUTE
-router.get('/', middleware.getLatestResources, function(req, res) {
+router.get('/', topicMiddleware.getLatestResources, function(req, res) {
 	var queryObj = {};
 	if (req.query.search) {
 		queryObj.title = new RegExp(utils.regexMethods.escape(req.query.search), 'gi');
@@ -24,12 +25,12 @@ router.get('/', middleware.getLatestResources, function(req, res) {
 });
 
 // NEW ROUTE
-router.get('/new', middleware.isLoggedIn, function(req, res) {
+router.get('/new', indexMiddleware.isLoggedIn, function(req, res) {
 	res.render('topics/new');
 });
 
 // CREATE ROUTE
-router.post('/', middleware.isLoggedIn, function(req, res) {
+router.post('/', indexMiddleware.isLoggedIn, function(req, res) {
 	// add author to topic before creation
 	var author = {
 		id: req.user._id,
@@ -47,18 +48,16 @@ router.post('/', middleware.isLoggedIn, function(req, res) {
 });
 
 // SHOW ROUTE
-router.get('/:topic_id', function(req, res) {
-	Topic.findById(req.params.topic_id).populate('resources').exec(function(err, topic) {
-		if (err || !topic) {
-			res.redirect('/topics');
-		} else {
-			res.render('topics/show', {topic: topic});
-		}
-	});
+router.get('/:topic_id', topicMiddleware.findTopicByIdAndPopulateResources, function(req, res) {
+	if (!req.topic) {
+		res.redirect('/topics');
+	} else {
+		res.render('topics/show', {topic: req.topic});
+	}
 });
 
 // EDIT ROUTE
-router.get('/:topic_id/edit', middleware.findTopicById, middleware.checkTopicOwnership, function(req, res) {
+router.get('/:topic_id/edit', topicMiddleware.findTopicById, topicMiddleware.checkTopicOwnership, function(req, res) {
 	if (!req.topic) {
 		res.redirect('/topics/' + req.params.topic_id);
 	} else {
@@ -67,7 +66,7 @@ router.get('/:topic_id/edit', middleware.findTopicById, middleware.checkTopicOwn
 });
 
 // UPDATE ROUTE
-router.put('/:topic_id', middleware.findTopicById, middleware.checkTopicOwnership, function(req, res) {
+router.put('/:topic_id', topicMiddleware.findTopicById, topicMiddleware.checkTopicOwnership, function(req, res) {
 	if (!req.topic) {
 		res.redirect('/topics/' + req.params.topic_id);
 	} else {
