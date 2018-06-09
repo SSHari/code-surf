@@ -1,6 +1,7 @@
 var express = require('express'),
 	mongoose = require('mongoose'),
 	bodyParser = require('body-parser'),
+	methodOverride = require('method-override'),
 	passport = require('passport'),
 	LocalStrategy = require('passport-local'),
 	User = require('./models/user');;
@@ -29,6 +30,7 @@ mongoose.connect(process.env.DATABASE_URL);
 app.set('view engine', 'ejs');
 app.use('/assets', express.static(__dirname + '/public'));
 app.use(bodyParser.urlencoded({extended: true}));
+app.use(methodOverride('_method'));
 
 // =========================
 // MOMENTJS CONFIG

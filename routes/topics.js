@@ -57,4 +57,29 @@ router.get('/:topic_id', function(req, res) {
 	});
 });
 
+// EDIT ROUTE
+router.get('/:topic_id/edit', middleware.findTopicById, middleware.checkTopicOwnership, function(req, res) {
+	if (!req.topic) {
+		res.redirect('/topics/' + req.params.topic_id);
+	} else {
+		res.render('topics/edit', {topic: req.topic});
+	}
+});
+
+// UPDATE ROUTE
+router.put('/:topic_id', middleware.findTopicById, middleware.checkTopicOwnership, function(req, res) {
+	if (!req.topic) {
+		res.redirect('/topics/' + req.params.topic_id);
+	} else {
+		req.topic.set(req.body.topic);
+		req.topic.save(function(err, topic) {
+			if (err || !topic) {
+				res.redirect('/topics/' + req.params.topic_id);
+			} else {
+				res.redirect('/topics/' + req.params.topic_id);
+			}
+		});
+	}
+});
+
 module.exports = router;

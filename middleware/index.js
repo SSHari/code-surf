@@ -1,4 +1,5 @@
-var Resource = require('../models/resource');
+var Topic = require('../models/topic'),
+	Resource = require('../models/resource');
 
 module.exports = {
 	isLoggedIn: function(req, res, next) {
@@ -14,6 +15,25 @@ module.exports = {
 			next();
 		} else {
 			res.redirect('/topics');
+		}
+	},
+	
+	findTopicById: function(req, res, next) {
+		Topic.findById(req.params.topic_id, function(err, topic) {
+			if (err || !topic) {
+				res.redirect('/topics');
+			} else {
+				req.topic = topic;
+				next();
+			}
+		});
+	},
+	
+	checkTopicOwnership: function(req, res, next) {
+		if (req.isAuthenticated() && req.topic && req.topic.author.id.equals(req.user._id)) {
+			next();
+		} else {
+			res.redirect('back');
 		}
 	},
 	
