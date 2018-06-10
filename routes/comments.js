@@ -61,14 +61,18 @@ router.put('/:comment_id', commentMiddleware.cleanUserCreatedComment, commentMid
 });
 
 // DESTROY ROUTE
-router.delete('/:comment_id', function(req, res) {
-	Comment.findByIdAndRemove(req.params.comment_id, function(err) {
-		if (err) {
-			res.redirect('back');
-		} else {
-			res.redirect('back');
-		}
-	});
+router.delete('/:comment_id', commentMiddleware.findCommentById, commentMiddleware.checkCommentOwnership, function(req, res) {
+	if (!req.comment) {
+		res.redirect('back');
+	} else {
+		req.comment.remove(function(err) {
+			if (err) {
+				res.redirect('back');
+			} else {
+				res.redirect('back');
+			}
+		});
+	}
 });
 
 module.exports = router;
