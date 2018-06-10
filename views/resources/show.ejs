@@ -11,6 +11,14 @@
     <% if (resource.resourceLink.includes('href=')) { %>
     	<%- resource.resourceLink %>
     <% } %>
+    <% if (currentUser && resource.author.id.equals(currentUser._id)) { %>
+	    <div class="mt-3">
+			<a class="btn btn-warning btn-sm" href="/topics/<%= topic_id %>/resources/<%= resource._id %>/edit">Edit</a>
+			<form class="d-inline" action="/topics/<%= topic_id %>/resources/<%= resource._id %>?_method=DELETE" method="POST">
+				<button class="btn btn-danger btn-sm">Delete</button>
+			</form>
+		</div>
+	<% } %>
   </div>
 </div>
 

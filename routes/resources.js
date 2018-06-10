@@ -21,7 +21,7 @@ router.get('/new', indexMiddleware.isLoggedIn, topicMiddleware.findTopicById, fu
 });
 
 // CREATE ROUTE
-router.post('/', indexMiddleware.isLoggedIn, topicMiddleware.findTopicById, function(req, res) {
+router.post('/', resourceMiddleware.cleanUserCreatedResource, indexMiddleware.isLoggedIn, topicMiddleware.findTopicById, function(req, res) {
 	var author, anchor;
 	if (!req.topic) {
 		res.redirect('/topics');
@@ -67,6 +67,52 @@ router.get('/:resource_id', resourceMiddleware.findResourceByIdAndPopulateCommen
 	} else {
 		req.resource.resourceLink = sanitizerMethods.sanitizeAnchorTag(req.resource.resourceLink);
 		res.render('resources/show', {topic_id: req.params.topic_id, resource: req.resource});
+	}
+});
+
+// EDIT ROUTE
+router.get('/:resource_id/edit', topicMiddleware.findTopicById, resourceMiddleware.findResourceById, resourceMiddleware.checkResourceOwnership, function(req, res) {
+	if (!req.resource) {
+		res.redirect('back');
+	} else {
+		req.resource.resourceLink = req.resource.resourceLink.match(/href="([^"]*)/);
+		req.resource.resourceLink = req.resource.resourceLink ? req.resource.resourceLink[1] : '';
+		res.render('resources/edit', {topic: req.topic, resource: req.resource});
+	}
+});
+
+// UPDATE ROUTE
+router.put('/:resource_id', resourceMiddleware.cleanUserCreatedResource, resourceMiddleware.findResourceById, resourceMiddleware.checkResourceOwnership, function(req, res) {
+	var anchor;
+	if (!req.resource) {
+		res.redirect('back');
+	} else {
+		// create anchor tag for resource before update
+		anchor = '<a class="btn btn-primary" href="' + req.body.resource.resourceLink + '">View Resource</a>';
+		req.body.resource.resourceLink = sanitizerMethods.sanitizeAnchorTag(anchor);
+		req.resource.set(req.body.resource);
+		req.resource.save(function(err, resource) {
+			if (err || !resource) {
+				res.redirect('back');
+			} else {
+				res.redirect('/topics/' + req.params.topic_id + '/resources/' + req.params.resource_id);
+			}
+		});
+	}
+});
+
+// DESTROY ROUTE
+router.delete('/:resource_id', resourceMiddleware.findResourceById, resourceMiddleware.checkResourceOwnership, function(req, res) {
+	if (!req.resource) {
+		res.redirect('back');
+	} else {
+		req.resource.remove(function(err) {
+			if (err) {
+				res.redirect('back');
+			} else {
+				res.redirect('/topics/' + req.params.topic_id + '/resources/' + req.params.resource_id);
+			}
+		});
 	}
 });
 

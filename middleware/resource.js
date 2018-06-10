@@ -21,5 +21,26 @@ module.exports = {
 				next();
 			}
 		});
+	},
+	
+	checkResourceOwnership: function(req, res, next) {
+		if (req.isAuthenticated() && req.resource && req.resource.author.id.equals(req.user._id)) {
+			next();
+		} else {
+			res.redirect('back');
+		}
+	},
+	
+	// prevent the user from filling out resource
+	// form data that they shouldn't be able to
+	cleanUserCreatedResource: function(req, res, next) {
+		if (req.body.resource) {
+			req.body.resource = {
+				title: req.body.resource.title,
+				description: req.body.resource.description,
+				resourceLink: req.body.resource.resourceLink
+			};
+		}
+		next();
 	}
 };

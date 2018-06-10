@@ -7,7 +7,7 @@
 	<a class="btn btn-primary btn-md" href="/topics/<%= topic._id %>/resources/new" role="button">Add Resource</a>
 	<% if (currentUser && topic.author.id.equals(currentUser._id)) { %>
 		<div class="mt-3">
-			<a class="btn btn-warning btn-sm" href="/topics/<%= topic._id %>/edit">Update</a>
+			<a class="btn btn-warning btn-sm" href="/topics/<%= topic._id %>/edit">Edit</a>
 			<form class="d-inline" action="/topics/<%= topic._id %>?_method=DELETE" method="POST">
 				<button class="btn btn-danger btn-sm">Delete</button>
 			</form>
