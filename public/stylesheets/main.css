@@ -53,6 +53,18 @@
     color: #739dce;
 }
 
+#cs-edit-comment-field {
+    resize: none;
+    border: none;
+    height: 100px;
+    width: 100%;
+    padding: 0 20px;
+}
+
+#cs-edit-comment-field:focus {
+    outline: none;
+}
+
 .delete-form {
     display: inline;
 }

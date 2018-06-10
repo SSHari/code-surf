@@ -45,4 +45,15 @@ router.post('/', middleware.isLoggedIn, function(req, res) {
 	});
 });
 
+// UPDATE ROUTE
+router.put('/:comment_id', function(req, res) {
+	Comment.findByIdAndUpdate(req.params.comment_id, req.body.comment, function(err, comment) {
+		if (err || !comment) {
+			res.redirect('back');
+		} else {
+			res.redirect('back');
+		}
+	});
+});
+
 module.exports = router;
