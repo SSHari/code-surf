@@ -81,4 +81,19 @@ router.put('/:topic_id', topicMiddleware.cleanUserCreatedTopic, topicMiddleware.
 	}
 });
 
+// DESTROY ROUTE
+router.delete('/:topic_id', topicMiddleware.findTopicById, topicMiddleware.checkTopicOwnership, function(req, res) {
+	if (!req.topic) {
+		res.redirect('back');
+	} else {
+		req.topic.remove(function(err) {
+			if (err) {
+				res.redirect('back');
+			} else {
+				res.redirect('/topics');
+			}
+		});
+	}
+});
+
 module.exports = router;
