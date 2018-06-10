@@ -43,11 +43,13 @@
 									Profile Pic
 								</div>
 								<div class="col-sm-12 px-1 text-center">
-									<button type="button" class="cs-comment-modal-btn cs-img-btn" title="Edit Comment" data-toggle="modal"
-										data-target="#commentModal" data-action="/topics/<%= topic_id %>/resources/<%= resource._id %>/comments/<%= comment._id %>?_method=PUT"
-										data-comment="<%= comment.text %>">
-										<span class="oi oi-pencil"></span>
-									</button>
+									<% if (currentUser && comment.author.id.equals(currentUser._id)) { %>
+										<button type="button" class="cs-comment-modal-btn cs-img-btn" title="Edit Comment" data-toggle="modal"
+											data-target="#commentModal" data-action="/topics/<%= topic_id %>/resources/<%= resource._id %>/comments/<%= comment._id %>?_method=PUT"
+											data-comment="<%= comment.text %>">
+											<span class="oi oi-pencil"></span>
+										</button>
+									<% } %>
 									<form class="d-inline" action="/topics/<%= topic_id %>/resources/<%= resource._id %>/comments/<%= comment._id %>?_method=DELETE" method="POST">
 										<button class="cs-img-btn" title="Delete Comment"><span class="oi oi-trash"></span></button>
 									</form>
