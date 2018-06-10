@@ -38,12 +38,21 @@
 				<div class="card-body pt-1">
 					<div class="row">
 						<div class="col-3">
-							Profile Pic
-							<button type="button" class="btn btn-link btn-sm cs-comment-modal-btn" data-toggle="modal"
-								data-target="#commentModal" data-action="/topics/<%= topic_id %>/resources/<%= resource._id %>/comments/<%= comment._id %>?_method=PUT"
-								data-comment="<%= comment.text %>">
-								Edit
-							</button>
+							<div class="row">
+								<div class="col-sm-12">
+									Profile Pic
+								</div>
+								<div class="col-sm-12 px-1 text-center">
+									<button type="button" class="cs-comment-modal-btn cs-img-btn" title="Edit Comment" data-toggle="modal"
+										data-target="#commentModal" data-action="/topics/<%= topic_id %>/resources/<%= resource._id %>/comments/<%= comment._id %>?_method=PUT"
+										data-comment="<%= comment.text %>">
+										<span class="oi oi-pencil"></span>
+									</button>
+									<form class="d-inline" action="/topics/<%= topic_id %>/resources/<%= resource._id %>/comments/<%= comment._id %>?_method=DELETE" method="POST">
+										<button class="cs-img-btn" title="Delete Comment"><span class="oi oi-trash"></span></button>
+									</form>
+								</div>
+							</div>
 						</div>
 						<div class="col-9">
 							<div class="lead pb-2">

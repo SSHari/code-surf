@@ -20,6 +20,11 @@
     margin: 25px auto;
 }
 
+.cs-img-btn {
+    background: none;
+    border: none;
+}
+
 #cs-new-comment-field {
     resize: none;
     border: none;
