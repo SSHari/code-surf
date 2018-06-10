@@ -30,7 +30,7 @@ router.get('/new', indexMiddleware.isLoggedIn, function(req, res) {
 });
 
 // CREATE ROUTE
-router.post('/', indexMiddleware.isLoggedIn, function(req, res) {
+router.post('/', topicMiddleware.cleanUserCreatedTopic, indexMiddleware.isLoggedIn, function(req, res) {
 	// add author to topic before creation
 	var author = {
 		id: req.user._id,
@@ -66,7 +66,7 @@ router.get('/:topic_id/edit', topicMiddleware.findTopicById, topicMiddleware.che
 });
 
 // UPDATE ROUTE
-router.put('/:topic_id', topicMiddleware.findTopicById, topicMiddleware.checkTopicOwnership, function(req, res) {
+router.put('/:topic_id', topicMiddleware.cleanUserCreatedTopic, topicMiddleware.findTopicById, topicMiddleware.checkTopicOwnership, function(req, res) {
 	if (!req.topic) {
 		res.redirect('/topics/' + req.params.topic_id);
 	} else {

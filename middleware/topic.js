@@ -41,5 +41,17 @@ module.exports = {
 			}
 			next();
 		});
+	},
+	
+	// prevent the user from filling out topic
+	// form data that they shouldn't be able to
+	cleanUserCreatedTopic: function(req, res, next) {
+		if (req.body.topic) {
+			req.body.topic = {
+				title: req.body.topic.title,
+				description: req.body.topic.description
+			};
+		}
+		next();
 	}
 };
