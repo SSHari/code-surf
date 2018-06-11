@@ -25,6 +25,10 @@
     border: none;
 }
 
+.cs-user-profile-badge {
+    font-size: 0.7rem;
+}
+
 #cs-new-comment-field {
     resize: none;
     border: none;

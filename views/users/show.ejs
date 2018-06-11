@@ -1,0 +1,133 @@
+<% include ../partials/header %>
+
+<div class="row">
+	<div class="col-md-4">
+		<div class="card mb-3">
+			<img class="card-img-top" src="https://images.unsplash.com/photo-1483058712412-4245e9b90334" alt="Profile Picture">
+			<div class="card-body">
+				<h4 class="card-title text-center"><%= user.firstName%> <%= user.lastName %></h4>
+				<hr>
+				<div class="card-text">
+					<div class="row">
+						<div class="col-4 text-center px-0">
+							<p><em class="cs-user-profile-badge">Topics</em></p>
+							<span class="badge badge-info"><%= topics.length %></span>
+						</div>
+						<div class="col-4 text-center px-0">
+							<p><em class="cs-user-profile-badge">Resources</em></p>
+							<span class="badge badge-info"><%= resources.length %></span>
+						</div>
+						<div class="col-4 text-center px-0">
+							<p><em class="cs-user-profile-badge">Comments</em></p>
+							<span class="badge badge-info"><%= comments.length %></span>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="col-md-8">
+		<div class="row">
+			<div class="col-lg-3 text-center text-lg-left mb-3">
+				<ul class="nav flex-lg-column nav-pills" id="myTab" role=tablist>
+					<li class="nav-item">
+						<a class="nav-link active" id="topics-tab" data-toggle="tab" href="#topics" role="tab" aria-controls="topics" aria-selected="true">Topics</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" id="resources-tab" data-toggle="tab" href="#resources" role="tab" aria-controls="resources" aria-selected="false">Resources</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" id="comments-tab" data-toggle="tab" href="#comments" role="tab" aria-controls="comments" aria-selected="false">Comments</a>
+					</li>
+				</ul>
+			</div>
+			<div class="col-lg-9">
+				<div class="tab-content" id="profileTabContent">
+					<div class="tab-pane fade show active" id="topics" role="tabpanel" aria-labelledby="topics-tab">
+						<div class="row">
+							<% if (topics.length === 0) { %>
+								No topics have been contributed
+							<% } else { %>
+								<% topics.forEach(function(topic) { %>
+									<div class="col-md-6">
+										<div class="card bg-light mb-1">
+											<div class="card-header text-center">
+												<h6><a href="/topics/<%= topic._id %>"><%= topic.title %></a></h6>
+												<span class="text-muted"><%= moment(topic.createdAt).fromNow() %></span>
+											</div>
+											<div class="card-body">
+												<div class="card-text">
+													<%= topic.description %>
+												</div>
+											</div>
+										</div>
+									</div>
+								<% }); %>
+							<% } %>
+						</div>
+					</div>
+					<div class="tab-pane fade" id="resources" role="tabpanel" aria-labelledby="resources-tab">
+						<% if (resources.length === 0) { %>
+							No resources have been contributed
+						<% } else { %>
+							<ul class="list-group">
+								<% resources.forEach(function(resource) { %>
+									<li class="list-group-item">
+										<a href="/topics/<%= resource.topic.id %>/resources/<%= resource._id %>"><%= resource.title %></a>
+										<span class="float-right"><%= moment(resource.createdAt).fromNow() %></span>
+									</li>
+								<% }); %>
+							</ul>
+						<% } %>
+					</div>
+					<div class="tab-pane fade" id="comments" role="tabpanel" aria-labelledby="comments-tab">
+						<% if (resources.length === 0) { %>
+							No comments have been made
+						<% } else { %>
+							<% comments.reverse().forEach(function(comment) { %>
+								<div class="card">
+									<div class="card-body pt-1">
+										<div class="row">
+											<div class="col-3">
+												<div class="row">
+													<div class="col-sm-12">
+														Profile Pic
+													</div>
+													<% if (currentUser && comment.author.id.equals(currentUser._id)) { %>
+														<div class="col-sm-12 px-1 text-center">
+															<button type="button" class="cs-comment-modal-btn cs-img-btn" title="Edit Comment" data-toggle="modal"
+																data-target="#commentModal" data-action="/topics/<%= comment.resource.id.topic.id %>/resources/<%= comment.resource.id._id %>/comments/<%= comment._id %>?_method=PUT"
+																data-comment="<%= comment.text %>">
+																<span class="oi oi-pencil"></span>
+															</button>
+															<form class="d-inline" action="/topics/<%= comment.resource.id.topic.id %>/resources/<%= comment.resource.id._id %>/comments/<%= comment._id %>?_method=DELETE" method="POST">
+																<button class="cs-img-btn" title="Delete Comment"><span class="oi oi-trash"></span></button>
+															</form>
+														</div>
+													<% } %>
+												</div>
+											</div>
+											<div class="col-9">
+												<div class="lead pb-2">
+													<em><%= comment.author.username %></em>
+													<span class="float-right"><em><%= moment(comment.createdAt).fromNow(); %></em></span>
+												</div>
+												<%= comment.text %>
+											</div>
+										</div>
+									</div>
+								</div>
+							<% }); %>
+						<% } %>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<% include ../partials/footer %>
+<!--<%= user %>-->
+<!--<%= topics %>-->
+<!--<%= resources %>-->
+<!--<%= comments %>-->

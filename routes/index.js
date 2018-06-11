@@ -21,7 +21,12 @@ router.get('/register', middleware.isLoggedOut, function(req, res) {
 
 // sign up a new user
 router.post('/register', middleware.isLoggedOut, function(req, res) {
-	var newUser = new User({username: req.body.username});
+	var newUser = new User({
+		firstName: req.body.firstName,
+		lastName: req.body.lastName,
+		username: req.body.username
+	});
+	
 	User.register(newUser, req.body.password, function(err, user) {
 		if (err) {
 			res.redirect('back');

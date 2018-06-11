@@ -12,7 +12,8 @@ var express = require('express'),
 var indexRoutes = require('./routes/index'),
 	topicRoutes = require('./routes/topics'),
 	resourceRoutes = require('./routes/resources'),
-	commentRoutes = require('./routes/comments');
+	commentRoutes = require('./routes/comments'),
+	userRoutes = require('./routes/users');
 	
 // =========================
 // CREATE EXPRESS APP
@@ -64,6 +65,7 @@ app.use('/', indexRoutes);
 app.use('/topics', topicRoutes);
 app.use('/topics/:topic_id/resources', resourceRoutes);
 app.use('/topics/:topic_id/resources/:resource_id/comments', commentRoutes);
+app.use('/users', userRoutes);
 
 // Catch all route displays 404 page
 app.get('*', function(req, res) {
