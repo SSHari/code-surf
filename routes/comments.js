@@ -12,6 +12,7 @@ var express = require('express'),
 router.post('/', commentMiddleware.cleanUserCreatedComment, indexMiddleware.isLoggedIn, resourceMiddleware.findResourceById, function(req, res) {
 	var author;
 	if (!req.resource) {
+		req.flash('error', 'The resource you were commenting on could not be retrieved.');
 		res.redirect('/topics/' + req.params.topic_id);
 	} else {
 		// add author to comment before creation
@@ -29,6 +30,7 @@ router.post('/', commentMiddleware.cleanUserCreatedComment, indexMiddleware.isLo
 		
 		Comment.create(req.body.comment, function(err, comment) {
 			if (err || !comment) {
+				req.flash('error', 'A comment can not be posted at this time. Try again later.');
 				res.redirect('/topics/' + req.params.topic_id + '/resources/' + req.resource._id);
 			} else {
 				// add comment to resource
@@ -36,6 +38,9 @@ router.post('/', commentMiddleware.cleanUserCreatedComment, indexMiddleware.isLo
 				
 				// save resource
 				req.resource.save();
+				
+				// add flash message
+				req.flash('success', 'Your comment was successfully created!');
 				
 				// redirect to resource page
 				res.redirect('/topics/' + req.params.topic_id + '/resources/' + req.resource._id)
@@ -47,13 +52,20 @@ router.post('/', commentMiddleware.cleanUserCreatedComment, indexMiddleware.isLo
 // UPDATE ROUTE
 router.put('/:comment_id', commentMiddleware.cleanUserCreatedComment, commentMiddleware.findCommentById, commentMiddleware.checkCommentOwnership, function(req, res) {
 	if (!req.comment) {
+		req.flash('error', 'Your comment could not be updated at this time. Try again later.');
 		res.redirect('back');
 	} else {
+		// set comment edited to true
+		req.body.comment.edited = true;
+		
+		// update comment
 		req.comment.set(req.body.comment);
 		req.comment.save(function(err, comment) {
 			if (err || !comment) {
+				req.flash('error', 'Your comment could not be updated at this time. Try again later.');
 				res.redirect('back');
 			} else {
+				req.flash('success', 'Your comment was updated successfully!');
 				res.redirect('back');
 			}
 		});
@@ -63,12 +75,15 @@ router.put('/:comment_id', commentMiddleware.cleanUserCreatedComment, commentMid
 // DESTROY ROUTE
 router.delete('/:comment_id', commentMiddleware.findCommentById, commentMiddleware.checkCommentOwnership, function(req, res) {
 	if (!req.comment) {
+		req.flash('error', 'Your comment could not be deleted at this time. Try again later.');
 		res.redirect('back');
 	} else {
 		req.comment.remove(function(err) {
 			if (err) {
+				req.flash('error', 'Your comment could not be deleted at this time. Try again later.');
 				res.redirect('back');
 			} else {
+				req.flash('success', 'Your comment was deleted successfully!');
 				res.redirect('back');
 			}
 		});

@@ -1,6 +1,5 @@
 var express = require('express'),
 	utils = require('../utils'),
-	Topic = require('../models/topic'),
 	Resource = require('../models/resource'),
 	indexMiddleware = require('../middleware/index'),
 	topicMiddleware = require('../middleware/topic'),
@@ -14,6 +13,7 @@ var express = require('express'),
 // NEW ROUTE
 router.get('/new', indexMiddleware.isLoggedIn, topicMiddleware.findTopicById, function(req, res) {
 	if (!req.topic) {
+		req.flash('error', 'The topic you were trying to add a resource to could not be retrieved.');
 		res.redirect('/topics');
 	} else {
 		res.render('resources/new', {topic: req.topic});
@@ -24,6 +24,7 @@ router.get('/new', indexMiddleware.isLoggedIn, topicMiddleware.findTopicById, fu
 router.post('/', resourceMiddleware.cleanUserCreatedResource, indexMiddleware.isLoggedIn, topicMiddleware.findTopicById, function(req, res) {
 	var author, anchor;
 	if (!req.topic) {
+		req.flash('error', 'The topic you were trying to add a resource to could not be retrieved.');
 		res.redirect('/topics');
 	} else {
 		// add author to resource before creation
@@ -45,6 +46,7 @@ router.post('/', resourceMiddleware.cleanUserCreatedResource, indexMiddleware.is
 		
 		Resource.create(req.body.resource, function(err, resource) {
 			if (err) {
+				req.flash('error', 'A new resource cannot be added at this time. Try again later.');
 				res.redirect('/topics/' + req.params.topic_id);
 			} else {
 				// add resource to topic
@@ -52,6 +54,9 @@ router.post('/', resourceMiddleware.cleanUserCreatedResource, indexMiddleware.is
 				
 				// save topic
 				req.topic.save();
+				
+				// add flash message
+				req.flash('success', 'Your resource was successfully created!');
 				
 				// redirect to topics page
 				res.redirect('/topics/' + req.params.topic_id);
@@ -63,6 +68,7 @@ router.post('/', resourceMiddleware.cleanUserCreatedResource, indexMiddleware.is
 // SHOW ROUTE
 router.get('/:resource_id', resourceMiddleware.findResourceByIdAndPopulateComments, function(req, res) {
 	if (!req.resource) {
+		req.flash('error', 'The resource could not be found.');
 		res.redirect('/topics/' + req.params.topic_id);
 	} else {
 		req.resource.resourceLink = sanitizerMethods.sanitizeAnchorTag(req.resource.resourceLink);
@@ -73,6 +79,7 @@ router.get('/:resource_id', resourceMiddleware.findResourceByIdAndPopulateCommen
 // EDIT ROUTE
 router.get('/:resource_id/edit', topicMiddleware.findTopicById, resourceMiddleware.findResourceById, resourceMiddleware.checkResourceOwnership, function(req, res) {
 	if (!req.resource) {
+		req.flash('error', 'The resource cannot be edited at this time. Try again later.');
 		res.redirect('back');
 	} else {
 		req.resource.resourceLink = req.resource.resourceLink.match(/href="([^"]*)/);
@@ -85,6 +92,7 @@ router.get('/:resource_id/edit', topicMiddleware.findTopicById, resourceMiddlewa
 router.put('/:resource_id', resourceMiddleware.cleanUserCreatedResource, resourceMiddleware.findResourceById, resourceMiddleware.checkResourceOwnership, function(req, res) {
 	var anchor;
 	if (!req.resource) {
+		req.flash('error', 'The resource cannot be edited at this time. Try again later.');
 		res.redirect('back');
 	} else {
 		// create anchor tag for resource before update
@@ -93,8 +101,10 @@ router.put('/:resource_id', resourceMiddleware.cleanUserCreatedResource, resourc
 		req.resource.set(req.body.resource);
 		req.resource.save(function(err, resource) {
 			if (err || !resource) {
+				req.flash('error', 'The resource cannot be edited at this time. Try again later.');
 				res.redirect('back');
 			} else {
+				req.flash('success', 'Your resource was successfully updated!');
 				res.redirect('/topics/' + req.params.topic_id + '/resources/' + req.params.resource_id);
 			}
 		});
@@ -104,13 +114,16 @@ router.put('/:resource_id', resourceMiddleware.cleanUserCreatedResource, resourc
 // DESTROY ROUTE
 router.delete('/:resource_id', resourceMiddleware.findResourceById, resourceMiddleware.checkResourceOwnership, function(req, res) {
 	if (!req.resource) {
+		req.flash('error', 'The resource cannot be deleted at this time. Try again later.');
 		res.redirect('back');
 	} else {
 		req.resource.remove(function(err) {
 			if (err) {
+				req.flash('error', 'The resource cannot be deleted at this time. Try again later.');
 				res.redirect('back');
 			} else {
-				res.redirect('/topics/' + req.params.topic_id + '/resources/' + req.params.resource_id);
+				req.flash('success', 'Your resource was successfully deleted!');
+				res.redirect('/topics/' + req.params.topic_id);
 			}
 		});
 	}

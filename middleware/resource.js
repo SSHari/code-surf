@@ -4,6 +4,7 @@ module.exports = {
 	findResourceById: function(req, res, next) {
 		Resource.findById(req.params.resource_id, function(err, resource) {
 			if (err || !resource) {
+				req.flash('error', 'Sorry! This resource is causing some internal issues.');
 				res.redirect('/topics/' + req.params.topic_id);
 			} else {
 				req.resource = resource;
@@ -15,6 +16,7 @@ module.exports = {
 	findResourceByIdAndPopulateComments: function(req, res, next) {
 		Resource.findById(req.params.resource_id).populate('comments').exec(function(err, resource) {
 			if (err || !resource) {
+				req.flash('error', 'Sorry! This resource is causing some internal issues.');
 				res.redirect('/topics/' + req.params.topic_id);
 			} else {
 				req.resource = resource;
@@ -27,6 +29,7 @@ module.exports = {
 		if (req.isAuthenticated() && req.resource && req.resource.author.id.equals(req.user._id)) {
 			next();
 		} else {
+			req.flash('error', 'Sorry! You cannot mess with a resource that is not yours...');
 			res.redirect('back');
 		}
 	},

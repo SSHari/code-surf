@@ -86,14 +86,17 @@
 						<% } else { %>
 							<% comments.reverse().forEach(function(comment) { %>
 								<div class="card">
-									<div class="card-body pt-1">
+									<div class="card-body py-1">
 										<div class="row">
 											<div class="col-3">
 												<div class="row">
-													<div class="col-sm-12">
-														<div class="card mb-3">
+													<div class="col-sm-12 text-center">
+														<div class="card mb-1">
 															<img src="https://images.unsplash.com/photo-1483058712412-4245e9b90334" class="card-img-top">
 														</div>
+														<% if (comment.edited) { %>
+															<div class="text-muted text-center mb-3"><em>edited</em></div>
+														<% } %>
 													</div>
 													<% if (currentUser && comment.author.id.equals(currentUser._id)) { %>
 														<div class="col-sm-12 px-1 text-center">

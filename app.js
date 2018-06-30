@@ -1,5 +1,6 @@
 var express = require('express'),
 	mongoose = require('mongoose'),
+	flash = require('connect-flash'),
 	bodyParser = require('body-parser'),
 	methodOverride = require('method-override'),
 	passport = require('passport'),
@@ -32,6 +33,7 @@ app.set('view engine', 'ejs');
 app.use('/assets', express.static(__dirname + '/public'));
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(methodOverride('_method'));
+app.use(flash());
 
 // =========================
 // MOMENTJS CONFIG
@@ -55,6 +57,8 @@ passport.deserializeUser(User.deserializeUser());
 // Use middleware to setup user info
 app.use(function(req, res, next) {
 	res.locals.currentUser = req.user;
+	res.locals.successMessage = req.flash('success');
+	res.locals.errorMessage = req.flash('error');
 	next();
 });
 

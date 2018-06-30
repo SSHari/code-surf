@@ -3,6 +3,10 @@ var mongoose = require('mongoose'),
 	
 commentSchema = new mongoose.Schema({
 	text: String,
+	edited: {
+		type: Boolean,
+		default: false
+	},
 	createdAt: {
 		type: Date,
 		default: Date.now

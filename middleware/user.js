@@ -7,6 +7,7 @@ module.exports = {
 	findUserById: function(req, res, next) {
 		User.findById(req.params.user_id, function(err, user) {
 			if (err || !user) {
+				req.flash('error', 'Sorry! This user is causing some internal issues.');
 				res.redirect('/topics');
 			} else {
 				req.user = user;

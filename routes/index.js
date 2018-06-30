@@ -29,9 +29,11 @@ router.post('/register', middleware.isLoggedOut, function(req, res) {
 	
 	User.register(newUser, req.body.password, function(err, user) {
 		if (err) {
+			req.flash('error', err.message);
 			res.redirect('back');
 		} else {
 			passport.authenticate('local')(req, res, function() {
+				req.flash('success', 'Welcome to CodeSurf ' + user.username);
 				res.redirect('/topics');
 			});
 		}
@@ -46,13 +48,16 @@ router.get('/login', middleware.isLoggedOut, function(req, res) {
 // log user in
 router.post('/login', middleware.isLoggedOut, passport.authenticate('local', {
 	successRedirect: '/topics',
-	failureRedirect: '/login'
+	failureRedirect: '/login',
+	successFlash: 'Welcome!',
+	failureFlash: 'There was an issue with the credentials provided'
 }), function(req, res) {
 });
 
 // log user out
 router.get('/logout', function(req, res) {
 	req.logout();
+	req.flash('success', 'Logged you out!');
 	res.redirect('/');
 });
 
