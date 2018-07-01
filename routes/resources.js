@@ -113,11 +113,30 @@ router.put('/:resource_id', resourceMiddleware.cleanUserCreatedResource, resourc
 });
 
 // DESTROY ROUTE
-router.delete('/:resource_id', resourceMiddleware.findResourceById, resourceMiddleware.checkResourceOwnership, commentMiddleware.removeCommentsByResourceId, function(req, res) {
-	if (!req.resource) {
+router.delete('/:resource_id', resourceMiddleware.findResourceById, resourceMiddleware.checkResourceOwnership, topicMiddleware.findTopicById, commentMiddleware.removeCommentsByResourceId, function(req, res) {
+	var resources, resourceToRemoveIndex, i;
+	if (!req.resource || !req.topic) {
 		req.flash('error', 'The resource cannot be deleted at this time. Try again later.');
 		res.redirect('back');
 	} else {
+		// get index of resource to remove
+		resources = req.topic.resources;
+		for (i = 0; i < resources.length; i += 1) {
+			if (resources[i].equals(req.resource._id)) {
+				resourceToRemoveIndex = i;
+				break;
+			}
+		}
+
+		if (resourceToRemoveIndex !== undefined) {
+			// remove resource id from topic
+			req.topic.resources = resources.slice(0, resourceToRemoveIndex).concat(resources.slice(resourceToRemoveIndex + 1));
+			
+			// save topic
+			req.topic.save();
+		}
+		
+		// delete resource
 		req.resource.remove(function(err) {
 			if (err) {
 				req.flash('error', 'The resource cannot be deleted at this time. Try again later.');
