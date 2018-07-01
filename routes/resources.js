@@ -3,6 +3,7 @@ var express = require('express'),
 	Resource = require('../models/resource'),
 	indexMiddleware = require('../middleware/index'),
 	topicMiddleware = require('../middleware/topic'),
+	commentMiddleware = require('../middleware/comment'),
 	resourceMiddleware = require('../middleware/resource'),
 	router = express.Router({mergeParams: true}),
 	sanitizerMethods = utils.sanitizerMethods;
@@ -112,7 +113,7 @@ router.put('/:resource_id', resourceMiddleware.cleanUserCreatedResource, resourc
 });
 
 // DESTROY ROUTE
-router.delete('/:resource_id', resourceMiddleware.findResourceById, resourceMiddleware.checkResourceOwnership, function(req, res) {
+router.delete('/:resource_id', resourceMiddleware.findResourceById, resourceMiddleware.checkResourceOwnership, commentMiddleware.removeCommentsByResourceId, function(req, res) {
 	if (!req.resource) {
 		req.flash('error', 'The resource cannot be deleted at this time. Try again later.');
 		res.redirect('back');

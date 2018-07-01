@@ -73,11 +73,30 @@ router.put('/:comment_id', commentMiddleware.cleanUserCreatedComment, commentMid
 });
 
 // DESTROY ROUTE
-router.delete('/:comment_id', commentMiddleware.findCommentById, commentMiddleware.checkCommentOwnership, function(req, res) {
-	if (!req.comment) {
+router.delete('/:comment_id', commentMiddleware.findCommentById, commentMiddleware.checkCommentOwnership, resourceMiddleware.findResourceById, function(req, res) {
+	var comments, commentToRemoveIndex, i;
+	if (!req.comment || !req.resource) {
 		req.flash('error', 'Your comment could not be deleted at this time. Try again later.');
 		res.redirect('back');
 	} else {
+		// get index of comment to remove
+		comments = req.resource.comments;
+		for (i = 0; i < comments.length; i += 1) {
+			if (comments[i].equals(req.comment._id)) {
+				commentToRemoveIndex = i;
+				break;
+			}
+		}
+
+		if (commentToRemoveIndex !== undefined) {
+			// remove comment id from resource
+			req.resource.comments = comments.slice(0, commentToRemoveIndex).concat(comments.slice(commentToRemoveIndex + 1));
+			
+			// save resource
+			req.resource.save();
+		}
+
+		// delete comment
 		req.comment.remove(function(err) {
 			if (err) {
 				req.flash('error', 'Your comment could not be deleted at this time. Try again later.');

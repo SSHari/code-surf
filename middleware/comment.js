@@ -31,5 +31,23 @@ module.exports = {
 			};
 		}
 		next();
+	},
+	
+	// removes comments associated with a
+	// resource when the resource is deleted
+	removeCommentsByResourceId(req, res, next) {
+		if (!req.resource) {
+			req.flash('error', 'Sorry! We cannot delete this resource at this time. Try again later.');
+			res.redirect('back');
+		} else {
+			Comment.deleteMany({'resource.id': req.resource._id}, function(err) {
+				if (err) {
+					req.flash('error', 'Sorry! We cannot delete this resource at this time. Try again later.');
+					res.redirect('back');
+				} else {
+					next();
+				}
+			});
+		}
 	}
 };
