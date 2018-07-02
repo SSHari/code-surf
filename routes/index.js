@@ -8,7 +8,11 @@ var express = require('express'),
 // LANDING PAGE ROUTE
 // =========================
 router.get('/', function(req, res) {
-	res.render('landing', {page: 'landing'});
+	if (req.isAuthenticated()) {
+		res.redirect('/topics');
+	} else {
+		res.render('landing', {page: 'landing'});
+	}
 });
 
 // =========================
