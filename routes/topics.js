@@ -3,6 +3,7 @@ var express = require('express'),
 	utils = require('../utils'),
 	indexMiddleware = require('../middleware/index'),
 	topicMiddleware = require('../middleware/topic'),
+	resourceMiddleware = require('../middleware/resource'),
 	router = express.Router();
 
 // =========================
@@ -98,7 +99,7 @@ router.put('/:topic_id', topicMiddleware.cleanUserCreatedTopic, topicMiddleware.
 });
 
 // DESTROY ROUTE
-router.delete('/:topic_id', topicMiddleware.findTopicById, topicMiddleware.checkTopicOwnership, function(req, res) {
+router.delete('/:topic_id', topicMiddleware.findTopicById, topicMiddleware.checkTopicOwnership, resourceMiddleware.removeCommentsByTopicId, resourceMiddleware.removeResourcesByTopicId, function(req, res) {
 	if (!req.topic) {
 		req.flash('error', 'The topic cannot be deleted at this time. Try again later.');
 		res.redirect('back');

@@ -1,4 +1,5 @@
-var Resource = require('../models/resource');
+var Resource = require('../models/resource'),
+	Comment = require('../models/comment');
 
 module.exports = {
 	findResourceById: function(req, res, next) {
@@ -45,5 +46,41 @@ module.exports = {
 			};
 		}
 		next();
+	},
+	
+	// removes comments associated with the
+	// resources of a topic when the topic is deleted
+	removeCommentsByTopicId(req, res, next) {
+		if (!req.topic) {
+			req.flash('error', 'Sorry! We cannot delete this topic at this time. Try again later.');
+			res.redirect('back');
+		} else {
+			Comment.deleteMany({'resource.id': {$in: req.topic.resources}}, function(err) {
+				if (err) {
+					req.flash('error', 'Sorry! We cannot delete this topic at this time. Try again later.');
+					res.redirect('back');
+				} else {
+					next();
+				}
+			});
+		}
+	},
+	
+	// removes resources associated with
+	// a topic when the topic is deleted
+	removeResourcesByTopicId(req, res, next) {
+		if (!req.topic) {
+			req.flash('error', 'Sorry! We cannot delete this topic at this time. Try again later.');
+			res.redirect('back');
+		} else {
+			Resource.deleteMany({'_id': {$in: req.topic.resources}}, function(err) {
+				if (err) {
+					req.flash('error', 'Sorry! We cannot delete this topic at this time. Try again later.');
+					res.redirect('back');
+				} else {
+					next();
+				}
+			});
+		}
 	}
 };
