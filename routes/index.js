@@ -8,7 +8,7 @@ var express = require('express'),
 // LANDING PAGE ROUTE
 // =========================
 router.get('/', function(req, res) {
-	res.render('landing');
+	res.render('landing', {page: 'landing'});
 });
 
 // =========================
@@ -16,7 +16,7 @@ router.get('/', function(req, res) {
 // =========================
 // get sign up page
 router.get('/register', middleware.isLoggedOut, function(req, res) {
-	res.render('register');
+	res.render('register', {page: 'register'});
 });
 
 // sign up a new user

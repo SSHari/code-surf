@@ -23,11 +23,13 @@
 				</button>
 				
 				<div class="collapse navbar-collapse" id="navbarSupportedContent">
-					<ul class="navbar-nav mr-auto">
-						<li class="nav-item active">
-							<a class="nav-link" href="/topics">Home</a>
-						</li>
-					</ul>
+					<% if (typeof page === 'undefined' || page !== 'landing') { %>
+						<ul class="navbar-nav mr-auto">
+							<li class="nav-item active">
+								<a class="nav-link" href="/topics">Home</a>
+							</li>
+						</ul>
+					<% } %>
 					<ul class="navbar-nav ml-auto">
 						<% if (!currentUser) { %>
 							<% if (typeof page === 'undefined' || page !== 'login') { %>
@@ -37,9 +39,11 @@
 									<button class="btn btn-outline-success my-2 my-sm-0" type="submit">Login</button>
 								</form>
 							<% } %>
-							<li class="nav-item">
-								<a class="nav-link" href="/register">Sign Up</a>
-							</li>
+							<% if (typeof page === 'undefined' || (page !== 'register' && page !== 'landing')) { %>
+								<li class="nav-item">
+									<a class="nav-link" href="/register">Sign Up</a>
+								</li>
+							<% } %>
 						<% } else if (currentUser) { %>
 							<li class="nav-item">
 								<a class="nav-link" href="/users/<%= currentUser.id %>"><%= currentUser.username %></a>
