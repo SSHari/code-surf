@@ -44,10 +44,12 @@
 			<div class="col-lg-9">
 				<div class="tab-content" id="profileTabContent">
 					<div class="tab-pane fade show active" id="topics" role="tabpanel" aria-labelledby="topics-tab">
-						<div class="row">
-							<% if (topics.length === 0) { %>
+						<% if (topics.length === 0) { %>
+							<div class="text-center">
 								No topics have been contributed
-							<% } else { %>
+							</div>
+						<% } else { %>
+							<div class="row">
 								<% topics.forEach(function(topic) { %>
 									<div class="col-md-6">
 										<div class="card bg-light mb-1">
@@ -63,12 +65,14 @@
 										</div>
 									</div>
 								<% }); %>
-							<% } %>
-						</div>
+							</div>
+						<% } %>
 					</div>
 					<div class="tab-pane fade" id="resources" role="tabpanel" aria-labelledby="resources-tab">
 						<% if (resources.length === 0) { %>
-							No resources have been contributed
+							<div class="text-center">
+								No resources have been contributed
+							</div>
 						<% } else { %>
 							<ul class="list-group">
 								<% resources.forEach(function(resource) { %>
@@ -81,8 +85,10 @@
 						<% } %>
 					</div>
 					<div class="tab-pane fade" id="comments" role="tabpanel" aria-labelledby="comments-tab">
-						<% if (resources.length === 0) { %>
-							No comments have been made
+						<% if (comments.length === 0) { %>
+							<div class="text-center">
+								No comments have been made
+							</div>
 						<% } else { %>
 							<% comments.reverse().forEach(function(comment) { %>
 								<div class="card">
@@ -151,7 +157,3 @@
 </div>
 
 <% include ../partials/footer %>
-<!--<%= user %>-->
-<!--<%= topics %>-->
-<!--<%= resources %>-->
-<!--<%= comments %>-->
