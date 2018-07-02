@@ -17,7 +17,7 @@ router.get('/', topicMiddleware.getLatestResources, function(req, res) {
 		Topic.find(queryObj, function(err, topics) {
 			if (err || !topics || topics.length === 0) {
 				req.flash('error', 'No topics were found with the provided search criteria.');
-				res.redirect('back');
+				res.redirect('/topics');
 			} else {
 				res.render('topics/index', {topics: topics, latestResources: req.latestResources});
 			}
