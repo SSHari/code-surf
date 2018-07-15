@@ -4,7 +4,11 @@
   "description": "Code Surf is an application designed to keep track of interesting software educational resources.",
   "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node app.js"
+  },
+  "engines": {
+    "node": "10.4.0"
   },
   "author": "Sai Hari",
   "license": "ISC",
