@@ -4,8 +4,8 @@
 	<h1 class="display-3"><%= topic.title %></h1>
 	<p class="lead"><%= topic.description %></p>
 	<hr class="my-4">
-	<a class="btn btn-primary btn-md" href="/topics/<%= topic._id %>/resources/new" role="button">Add Resource</a>
 	<% if (currentUser && topic.author.id.equals(currentUser._id)) { %>
+	<a class="btn btn-primary btn-md" href="/topics/<%= topic._id %>/resources/new" role="button">Add Resource</a>
 		<div class="mt-3">
 			<a class="btn btn-warning btn-sm" href="/topics/<%= topic._id %>/edit">Edit</a>
 			<form class="d-inline" action="/topics/<%= topic._id %>?_method=DELETE" method="POST">
@@ -23,19 +23,14 @@
 	</div>
 </div>
 
-<div class="row">
-	<div class="col-md-9">
-		<h4>Resources</h4>
-		<div class="list-group">
-			<% topic.resources.forEach(function(resource) { %>
-				<a href="/topics/<%= topic._id%>/resources/<%= resource._id %>" class="list-group-item list-group-item-action">
-					<%= resource.title %>
-				</a>
-			<% }); %>
-		</div>
-	</div>
-	<div class="d-none d-md-block col-md-3">
-		<h6><em>Top 10 in subreddit</em></h6>
+<div>
+	<h4>Resources</h4>
+	<div class="list-group">
+		<% topic.resources.forEach(function(resource) { %>
+			<a href="/topics/<%= topic._id%>/resources/<%= resource._id %>" class="list-group-item list-group-item-action">
+				<%= resource.title %>
+			</a>
+		<% }); %>
 	</div>
 </div>
 
