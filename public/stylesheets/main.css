@@ -42,6 +42,34 @@
     font-size: 0.7rem;
 }
 
+.cs-profile-picture-edit {
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    background: white;
+    border: none;
+    border-bottom-left-radius: 10px;
+    cursor: pointer;
+}
+
+.cs-profile-picture-edit:focus {
+    outline: none;
+}
+
+.cs-upload-profile-pic {
+    width: 100%;
+}
+
+.cs-custom-file-control.custom-file-control {
+    font-size: 10px;
+    line-height: 22px;
+}
+
+.custom-file-control::before,
+.custom-file-control::after {
+    font-size: 16px;
+}
+
 #cs-new-comment-field {
     resize: none;
     border: none;
