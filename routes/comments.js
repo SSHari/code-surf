@@ -18,7 +18,8 @@ router.post('/', commentMiddleware.cleanUserCreatedComment, indexMiddleware.isLo
 		// add author to comment before creation
 		author = {
 			id: req.user._id,
-			username: req.user.username
+			username: req.user.username,
+			profilePicture: req.user.profilePicture
 		};
 		req.body.comment.author = author;
 		

@@ -106,7 +106,7 @@
 												<div class="row">
 													<div class="col-sm-12 text-center">
 														<div class="card mb-1">
-															<img src="https://images.unsplash.com/photo-1483058712412-4245e9b90334" class="card-img-top">
+															<img src="<%= comment.author.profilePicture || 'https://images.unsplash.com/photo-1483058712412-4245e9b90334' %>" class="card-img-top">
 														</div>
 														<% if (comment.edited) { %>
 															<div class="text-muted text-center mb-3"><em>edited</em></div>
