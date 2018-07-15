@@ -44,13 +44,13 @@
 									<span class="oi oi-person"></span>
 								</a>
 								<div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-									<h6 class="dropdown-header"><%= currentUser.firstName %> <%= currentUser.lastName %></h6>
-									<a class="dropdown-item" href="/topics/new">Create Topic</a>
-									<a class="dropdown-item" href="/users/<%= currentUser.id %>">Profile</a>
+									<h6 class="dropdown-header">Logged in as <strong><%= currentUser.firstName %> <%= currentUser.lastName %></strong></h6>
+									<div class="dropdown-divider"></div>
+									<a class="dropdown-item" href="/topics/new">Create topic</a>
+									<a class="dropdown-item" href="/users/<%= currentUser.id %>">Your profile</a>
+									<div class="dropdown-divider"></div>
+									<a class="dropdown-item" href="/logout">Sign out</a>
 								</div>
-							</li>
-							<li class="nav-item">
-								<a class="nav-link" href="/logout">Logout</a>
 							</li>
 						<% } %>
 					</ul>
