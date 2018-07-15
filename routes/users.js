@@ -1,6 +1,7 @@
 var express = require('express'),
 	multer = require('multer'),
 	cloudinary = require('cloudinary'),
+	Comment = require('../models/comment'),
 	userMiddleware = require('../middleware/user'),
 	router = express.Router(),
 	storage = multer.diskStorage({
@@ -66,6 +67,9 @@ router.put('/:user_id', userMiddleware.findUserById, upload.single('uploadProfil
 			
 			// save user profile
 			await req.foundUser.save();
+			
+			// update comments with new profile picture
+			await Comment.updateMany({'author.id': req.foundUser._id}, {$set:{'author.profilePicture': uploadedImage.secure_url}});
 			
 			res.redirect('/users/' + req.foundUser._id);
 		} catch (err) {
